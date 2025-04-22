@@ -1,18 +1,170 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countdown Timer with Audio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SPM Countdown</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #1e3c72, #2a5298);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .countdown {
+      display: flex;
+      gap: 15px;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      min-width: 90px;
+    }
+
+    .label {
+      font-size: 0.8rem;
+      margin-top: 5px;
+      opacity: 0.8;
+    }
+
+    .message {
+      margin-top: 25px;
+      font-size: 1.2rem;
+      font-style: italic;
+      max-width: 90%;
+      color: yellow;
+    }
+
+    .pray-button {
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #ffcc00;
+      color: black;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      transition: transform 0.2s;
+    }
+
+    .pray-button:hover {
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 600px) {
+      .countdown {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Countdown Timer</h1>
-    <p>Click "Pray" to start the audio.</p>
-    <audio id="background-audio" loop>
-        <source src="/Leo.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
-    <button onclick="document.getElementById('background-audio').play()">Pray</button>
+
+  <h1>📚 SPM Countdown: The Final Saga</h1>
+  <div class="countdown" id="countdown">
+    <div class="box">
+      <div id="days">0</div>
+      <div class="label">Days</div>
+    </div>
+    <div class="box">
+      <div id="hours">0</div>
+      <div class="label">Hours</div>
+    </div>
+    <div class="box">
+      <div id="minutes">0</div>
+      <div class="label">Minutes</div>
+    </div>
+    <div class="box">
+      <div id="seconds">0</div>
+      <div class="label">Seconds</div>
+    </div>
+  </div>
+
+  <div class="message" id="message">⏳ Waiting for the end...</div>
+
+  <button class="pray-button" onclick="pray()">🙏 Click to Pray</button>
+
+  <!-- 🎧 Audio -->
+  <audio id="background-audio" loop>
+    <source src="https://github.com/n335h-max/countdown/raw/refs/heads/main/I%20Am%20Scared%20Leo%20320%20Kbps.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const targetDate = new Date("April 24, 2025 10:00:00").getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+      const messageEl = document.getElementById("message");
+
+      if (distance < 0) {
+        document.getElementById("countdown").innerHTML = "⏰ It is done.";
+        messageEl.innerHTML = "Redirecting... You can’t escape now 😈";
+        setTimeout(() => {
+          window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // 😏 or your result page
+        }, 5000);
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("days").textContent = days;
+      document.getElementById("hours").textContent = hours;
+      document.getElementById("minutes").textContent = minutes;
+      document.getElementById("seconds").textContent = seconds;
+
+      // Funny message selector
+      if (days === 2 && hours < 1) {
+        messageEl.innerHTML = "Only 2 days left... Better start crying 😭";
+      } else if (days === 1 && hours < 1) {
+        messageEl.innerHTML = "Your life result will show in 1 day huh? 😂";
+      } else if (days === 0 && hours === 10) {
+        messageEl.innerHTML = "10 hours to go. Panic mode unlocked 🔓";
+      } else if (days === 0 && hours === 3) {
+        messageEl.innerHTML = "3 hours left... Too late to study now 🤡";
+      } else if (days === 0 && hours === 0 && minutes <= 10) {
+        messageEl.innerHTML = "Final minutes... may God bless your brain 🧠✨";
+      } else {
+        messageEl.innerHTML = "Countdown continues... Let’s pray for a miracle 🙏";
+      }
+    }
+
+    function pray() {
+      alert("🛐 Dear Exam God, please give me 1 mark for every tear I cried.");
+      const audio = document.getElementById("background-audio");
+      audio.play().catch(err => {
+        console.log("Audio play failed:", err);
+      });
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+
 </body>
 </html>
